@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
-
+import Signin from '../containers/signin';
 class App extends Component {
 
 
@@ -11,11 +11,10 @@ class App extends Component {
             <div className="container">
                 <BrowserRouter>
                     <div>
-                        dota
-                        {/* <Header />
-                        <Route exact path="/" component={Landing} />
-                        <Route exact path="/surveys" component={Dashboard} />
-                        <Route path="/surveys/new" component={SurveyNew} /> */}
+                        {/* <Header /> */}
+                        <Route exact path="/" component={Signin} />
+                        {/* <Route exact path="/surveys" component={Dashboard} /> */}
+                        {/* <Route path="/surveys/new" component={SurveyNew} /> */}
                     </div>
                 </BrowserRouter>
             </div>
