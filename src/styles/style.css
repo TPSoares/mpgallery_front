@@ -1,0 +1,74 @@
+.login-background {
+    background: linear-gradient(15deg, #6579ea 50%, #FFF 50%);
+    position: absolute;
+    content: "";
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-div {
+    width: 400px;
+    height: 350px;
+    padding: 20px;
+    background: #FFF;
+    border-radius: 20px;
+    box-shadow: 10px 0px 20px -5px;
+}
+
+.form-div-inside {
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+}
+.form-div-signup {
+    width: 400px;
+    height: 550px;
+    padding: 20px;
+    background: #FFF;
+    border-radius: 20px;
+    box-shadow: 10px 0px 20px -5px;
+}
+
+.form-div-inside-signup {
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-control {
+    margin-bottom: 10px;
+    /* margin-top: 10px; */
+    border: 0;
+    border-radius: 0px;
+    border-bottom: 2px solid #6579ea;
+}
+
+.input-feedback {
+    color: red;
+    margin-top: .25rem;
+}
+
+.signin-btn  {
+    margin-top: 20px;
+    padding: 10px;
+    background: #6579ea;
+    border: none;
+    border-radius: 20px;
+}
+.cancel-btn  {
+    margin-top: 20px;
+    padding: 10px;
+    border: none;
+    border-radius: 20px;
+}
+
+.signin-redirect {
+    margin-top: 20px;
+}
