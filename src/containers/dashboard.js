@@ -134,9 +134,15 @@ class Dashboard extends Component {
                                     <img className="card-img-top" src={photo.path}></img>
                                     <hr></hr>
                                     <div className="card-body">
-                                        <h3 className="card-title">{photo.title}</h3>
+                                        {/* <h3 className="card-title">{photo.title}</h3> */}
+                                        <p>{photo.likes.length} likes</p>
+                                        <p className="card-text"><b>{photo.user.name}</b> {photo.description}</p>
                                         <hr></hr>
-                                        <p className="card-text">{photo.description}</p>
+                                        {photo.comments.map(comment => {
+                                            return (
+                                                <p key={comment.created_at}><b>{comment.user.name}</b> {comment.comment}</p>
+                                            )
+                                        })}
                                         {/* <p className="card-text">By: {photo.user.name}</p> */}
                                     </div>
                                 </div>

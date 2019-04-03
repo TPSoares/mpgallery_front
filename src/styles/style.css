@@ -115,8 +115,12 @@
     /* display: flex;
     justify-content: center; */
     margin: 20px;
-    width: 40%;
+    width: 50%;
     /* border: 2px solid #000; */
+}
+
+.images p {
+    margin: 5px;
 }
 
 .card-header {
