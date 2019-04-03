@@ -1,3 +1,5 @@
+/* SIGNIN AND SIGNUP PAGES */
+
 .login-background {
     background: linear-gradient(15deg, #6579ea 50%, #FFF 50%);
     position: absolute;
@@ -72,3 +74,53 @@
 .signin-redirect {
     margin-top: 20px;
 }
+
+/* END SIGNIN AND SIGNUP PAGES */
+
+/* NAVBAR DASHBOARD */
+
+.dashboard-nav {
+    /* position: relative; */
+    height: 80px;
+    background-color: #6579ea;
+    /* display: flex; */
+}
+
+.signout-btn {
+    margin-top: 20px;
+    padding: 10px;
+    background: #6579ea;
+    border: 1px solid white;
+    border-radius: 20px;
+    margin-left: 10px;
+    width: 80px;
+}
+
+/* END NAVBAR DASHBOARD */
+
+/* DASHBOARD IMAGES */
+
+.dashboard-bg {
+    background-color: #F7F7F7;
+}
+ 
+.image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: center; */
+}
+
+.images {
+    /* display: flex;
+    justify-content: center; */
+    margin: 20px;
+    width: 40%;
+    /* border: 2px solid #000; */
+}
+
+.card-header {
+    background-color: #FFF;
+}
+
+/* END DASHBOARD IMAGES */
