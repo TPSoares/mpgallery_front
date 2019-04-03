@@ -17,8 +17,24 @@ class Dashboard extends Component {
             photos: []
         }
 
-        this.removeTokenAndLogout = this.removeTokenAndLogout.bind(this);
+        this.removeTokenAndLogout = this.removeTokenAndLogout.bind(this);   
+        this.onScroll = this.onScroll.bind(this);   
     }
+
+    onScroll = async () => {
+        if (
+            //check
+          (window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 1)
+        ) {
+            console.log(this.state.page);
+            // async () => {
+                // console.log("PAGEBEFORE", this.state.page);
+                await this.setState({page: this.state.page + 1})
+                // console.log("PAGEAFTER", this.state.page);
+                this.props.getAllPhotos(this.state.page)
+            // }
+        }
+      }
 
     componentWillMount() {
 
@@ -31,6 +47,8 @@ class Dashboard extends Component {
     }
 
     componentDidMount() {
+        window.addEventListener('scroll', this.onScroll, false);
+
         if(this.props.location.state) {
             this.setState({
                 user: this.props.location.state.data.user
@@ -38,15 +56,20 @@ class Dashboard extends Component {
         }
 
         this.props.getAllPhotos(this.state.page);
+
     }
 
-   componentWillReceiveProps(nextProps) {
-       if(this.props.photos.data !== nextProps.photos.data && this.state.photos.length != 0) {
-            nextProps.photos.data.data.forEach(photo => {
-                this.state.photos.push(photo);
-            });
-       }
-   }
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.onScroll, false);
+      }
+
+    componentWillReceiveProps(nextProps) {
+        if(this.props.photos.data !== nextProps.photos.data && this.state.photos.length != 0) {
+                nextProps.photos.data.data.forEach(photo => {
+                    this.state.photos.push(photo);
+                });
+        }
+    }
 
     removeTokenAndLogout() {
         sessionStorage.removeItem('token');
@@ -60,7 +83,7 @@ class Dashboard extends Component {
         { 
 
         // console.log("TOKEN DASHBOARD", token)
-        console.log("PHOTOS: ", this.state.photos)
+        // console.log("PHOTOS: ", this.state.message)
          }
         // const LogoutButton = withRouter(({ history }) => (
         //     <Button className="btn btn-primary signin-btn" 
@@ -123,7 +146,7 @@ class Dashboard extends Component {
                     {/* {this.props.photos.data[0].id} */}
                 </div>
 
-                <Button className="btn btn-primary my-auto signout-btn" type="submit" 
+                {/* <Button className="btn btn-primary my-auto signout-btn" type="submit" 
                     onClick={async () => {
                         // console.log("PAGEBEFORE", this.state.page);
                         await this.setState({page: this.state.page + 1})
@@ -132,7 +155,7 @@ class Dashboard extends Component {
                     }
                     }>
                         +
-                </Button>
+                </Button> */}
                 
             </div>
             
@@ -151,4 +174,3 @@ function mapDispatchToProps (dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
-// export default Dashboard;
