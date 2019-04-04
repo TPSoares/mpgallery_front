@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
 import { bindActionCreators } from "redux";
 import { connect } from 'react-redux';
-import { Form, FormControl, Button, Navbar } from 'react-bootstrap';
-import { withRouter } from 'react-router-dom';
+import { Button, Navbar } from 'react-bootstrap';
 
 import { getAllPhotos } from '../actions/photos';
+import { getComments } from '../actions/comments';
 
 class Dashboard extends Component {
     
@@ -14,7 +13,9 @@ class Dashboard extends Component {
         this.state = {
             user: {},
             page: 1,
-            photos: []
+            photos: [],
+            comment_limit: 3,
+            current_photo_id: null
         }
 
         this.removeTokenAndLogout = this.removeTokenAndLogout.bind(this);   
@@ -64,10 +65,23 @@ class Dashboard extends Component {
       }
 
     componentWillReceiveProps(nextProps) {
-        if(this.props.photos.data !== nextProps.photos.data && this.state.photos.length != 0) {
+        if(this.props.photos.data !== nextProps.photos.data && this.state.photos.length !== 0) {
                 nextProps.photos.data.data.forEach(photo => {
                     this.state.photos.push(photo);
                 });
+        }
+
+        if(this.props.comments.data !== nextProps.comments.data) {
+            let photos = [...this.state.photos];
+                let index = photos.findIndex(p => p.id === this.state.current_photo_id);
+                // console.log(this.state.current_photo_id);
+                nextProps.comments.data.forEach(comment => {
+
+                    photos[index].comments.push(comment);
+                });
+
+                // console.log(index);
+
         }
     }
 
@@ -78,25 +92,7 @@ class Dashboard extends Component {
 
     render() {
 
-        let token = sessionStorage.getItem('token');
-
-        { 
-
-        // console.log("TOKEN DASHBOARD", token)
-        // console.log("PHOTOS: ", this.state.message)
-         }
-        // const LogoutButton = withRouter(({ history }) => (
-        //     <Button className="btn btn-primary signin-btn" 
-        //         onClick={() => {
-        //                 sessionStorage.removeItem('token');
-        //                 history.push('/')
-        //             }
-        //         }>
-        //         Logout
-        //     </Button>
-        //   ))
-
-        if(this.props.photos.data && this.state.photos.length == 0) {
+        if(this.props.photos.data && this.state.photos.length === 0) {
             // this.setState({ photos: [...this.state.photos, this.props.photos.data.data] })
             // this.props.photos
             this.props.photos.data.data.forEach(photo => {
@@ -104,6 +100,9 @@ class Dashboard extends Component {
             });
             console.log("AGORAVAI", this.state.photos)
         }
+
+        console.log("NEWCOMMENTS: ", this.props.comments)
+        console.log("NEW DATA: ", this.state.photos)
 
         return (
             <div className="dashboard-bg">
@@ -131,7 +130,7 @@ class Dashboard extends Component {
                             return (
                                 <div key={photo.id} className="card images">
                                     <div className="card-header"><b>{photo.user.name}</b></div>
-                                    <img className="card-img-top" src={photo.path}></img>
+                                    <img className="card-img-top" src={photo.path} alt={photo.description}></img>
                                     <hr></hr>
                                     <div className="card-body">
                                         {/* <h3 className="card-title">{photo.title}</h3> */}
@@ -140,9 +139,19 @@ class Dashboard extends Component {
                                         <hr></hr>
                                         {photo.comments.map(comment => {
                                             return (
-                                                <p key={comment.created_at}><b>{comment.user.name}</b> {comment.comment}</p>
+                                                <p key={comment.id}><b>{comment.user.name}</b> {comment.comment}</p>
                                             )
                                         })}
+                                        <div className="button-more-images">
+                                        <Button className="btn btn-primary btn-more-images" onClick={async () => {
+                                            await this.setState({current_photo_id: photo.id})
+                                            await this.props.getComments(photo.id, photo.comments.length, 3);
+                                            
+                                            // photo.comments.current_page++;
+                                            
+                                            
+                                        }}>more comments</Button>
+                                        </div>
                                         {/* <p className="card-text">By: {photo.user.name}</p> */}
                                     </div>
                                 </div>
@@ -171,12 +180,13 @@ class Dashboard extends Component {
 
 function mapStateToProps(state) {
     return {
-        photos: state.photos
+        photos: state.photos,
+        comments: state.comments
     };
 }
 
 function mapDispatchToProps (dispatch) {
-    return bindActionCreators({ getAllPhotos }, dispatch)
+    return bindActionCreators({ getAllPhotos, getComments }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

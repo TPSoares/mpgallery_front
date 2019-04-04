@@ -1,11 +1,12 @@
-import {
-    FETCH_PHOTOS_DATA_SUCCESS,
-    FETCH_PHOTOS_DATA_FAIL
+import { FETCH_COMMENTS_DATA_SUCCESS,
+    FETCH_COMMENTS_DATA_FAIL 
 } from './types';
+
 import axios from 'axios';
 
-export const getAllPhotos = (page) => async (dispatch) => {
-    const request = `http://laravelteste.webdev-solutions.com/public/api/photos?page=${page}`;
+export const getComments = (photo, offset, limit) => async dispatch => {
+    const request = `http://laravelteste.webdev-solutions.com/public/api/photos/${photo}/comment/offset/${offset}/limit/${limit}`;
+
     const token = sessionStorage.getItem('token');
     const headers = {
         'Authorization': 'Bearer ' + token
@@ -16,7 +17,7 @@ export const getAllPhotos = (page) => async (dispatch) => {
 
         console.log(response);
         dispatch({
-            type: FETCH_PHOTOS_DATA_SUCCESS,
+            type: FETCH_COMMENTS_DATA_SUCCESS,
             payload: response.data
         })
     } catch (err) {
@@ -24,7 +25,7 @@ export const getAllPhotos = (page) => async (dispatch) => {
             console.log("TOKEN", token);
             console.log(err.response);
             dispatch({
-                type: FETCH_PHOTOS_DATA_FAIL,
+                type: FETCH_COMMENTS_DATA_FAIL,
                 payload: err.response.data
             })
         } else if (err.request) {

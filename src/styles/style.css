@@ -127,4 +127,16 @@
     background-color: #FFF;
 }
 
+.button-more-images {
+    display: flex;
+    justify-content: center;
+}
+
+.btn-more-images {
+    background-color: #6579ea;
+    border: none;
+    padding: 5px;
+    margin-top: 10px;
+}
+
 /* END DASHBOARD IMAGES */

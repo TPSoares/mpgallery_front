@@ -26,7 +26,6 @@ class Signin extends Component {
                 .required('Password is required')
         })
 
-        let token = sessionStorage.getItem('token');
         return (
             <div className="login-background">
             {/* Case we get invalid credentials */}
@@ -51,7 +50,6 @@ class Signin extends Component {
                         handleChange,
                         handleSubmit,
                         handleBlur,
-                        isSubmitting,
                         errors,
                         touched,
                     } = props;

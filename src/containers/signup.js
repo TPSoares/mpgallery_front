@@ -36,7 +36,6 @@ class Signup extends Component {
             age: Yup.number('Invalid field, must be a number')
         })
 
-        let token = sessionStorage.getItem('token');
         return (
             
             <div className="login-background">
