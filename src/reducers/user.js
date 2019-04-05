@@ -1,7 +1,8 @@
 import { 
     FETCH_SIGNIN_DATA_SUCCESS,
     FETCH_SIGNUP_DATA_SUCCESS,
-    FETCH_SIGNIN_DATA_FAIL
+    FETCH_SIGNIN_DATA_FAIL,
+    FETCH_SIGNOUT_DATA_SUCCESS
 } from '../actions/types';
 
 
@@ -24,6 +25,8 @@ export default function(state = [], action) {
         case FETCH_SIGNUP_DATA_SUCCESS:
             return action.payload;
         case FETCH_SIGNIN_DATA_FAIL:
+            return action.payload;
+        case FETCH_SIGNOUT_DATA_SUCCESS:
             return action.payload;
         default:
             return state;

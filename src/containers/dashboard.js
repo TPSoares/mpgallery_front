@@ -7,6 +7,8 @@ import * as Yup from 'yup';
 
 import { getAllPhotos } from '../actions/photos';
 import { getComments, createComment } from '../actions/comments';
+import { setLike } from '../actions/likes';
+import { signout } from '../actions/user';
 
 class Dashboard extends Component {
     
@@ -68,9 +70,12 @@ class Dashboard extends Component {
 
     componentWillReceiveProps(nextProps) {
         if(this.props.photos.data !== nextProps.photos.data && this.state.photos.length !== 0) {
+            if(nextProps.photos.data) {
+
                 nextProps.photos.data.data.forEach(photo => {
                     this.state.photos.push(photo);
                 });
+            }
         }
 
         if(this.props.comments.data !== nextProps.comments.data) {
@@ -87,11 +92,30 @@ class Dashboard extends Component {
                 }
 
                 // console.log(index);
+        }
 
+        if(this.props.likes.data !== nextProps.likes.data) {
+            let photos = [...this.state.photos];
+                let index = photos.findIndex(p => p.id === this.state.current_photo_id);
+                console.log(nextProps.likes.message);
+                if(nextProps.likes.data) {
+
+                    if(nextProps.likes.message == 'Like criado!') {
+                        
+                        // nextProps.likes.data.data.forEach(like => {
+                            
+                            photos[index].likes.push(nextProps.likes.data);
+                            // });
+                    } else {
+                        photos[index].likes.pop(nextProps.likes.data);
+                    }
+                }
         }
     }
 
-    removeTokenAndLogout() {
+    async removeTokenAndLogout() {
+        await this.setState({photos: []});
+        await this.setState({user: {}});
         sessionStorage.removeItem('token');
         this.props.history.push('/')
     }
@@ -126,7 +150,10 @@ class Dashboard extends Component {
                     <Button className="btn btn-primary my-auto signout-btn" type="submit">
                         Edit
                     </Button>
-                    <Button className="btn btn-primary my-auto signout-btn" type="submit" onClick={this.removeTokenAndLogout}>
+                    <Button className="btn btn-primary my-auto signout-btn" type="submit" onClick={async () => {
+                            await this.props.signout();
+                            this.props.history.push("/");
+                        }}>
                         Signout
                     </Button>
                 </div>
@@ -144,6 +171,13 @@ class Dashboard extends Component {
                                     <img className="card-img-top" src={photo.path} alt={photo.description}></img>
                                     <hr></hr>
                                     <div className="card-body">
+                                        <Button className="btn btn-primary btn-comment"  onClick={async () => {
+                                            await this.setState({current_photo_id: photo.id});
+                                            await this.props.setLike(photo.id);
+                                        }}>{
+                                            //GG!
+                                            photo.likes.findIndex(like => like.user_id === this.state.user.id) === -1 ? "Like" : "Liked"
+                                        }</Button>
                                         {/* <h3 className="card-title">{photo.title}</h3> */}
                                         <p>{photo.likes.length} likes</p>
                                         <p className="card-text"><b>{photo.user.name}</b> {photo.description}</p>
@@ -244,12 +278,14 @@ class Dashboard extends Component {
 function mapStateToProps(state) {
     return {
         photos: state.photos,
-        comments: state.comments
+        comments: state.comments,
+        likes: state.likes,
+        user: state.user
     };
 }
 
 function mapDispatchToProps (dispatch) {
-    return bindActionCreators({ getAllPhotos, getComments, createComment }, dispatch)
+    return bindActionCreators({ getAllPhotos, getComments, createComment, setLike, signout }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

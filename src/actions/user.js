@@ -1,7 +1,8 @@
 import { 
     FETCH_SIGNIN_DATA_SUCCESS, 
     FETCH_SIGNUP_DATA_SUCCESS,
-    FETCH_SIGNIN_DATA_FAIL
+    FETCH_SIGNIN_DATA_FAIL,
+    FETCH_SIGNOUT_DATA_SUCCESS
 } from './types';
 import axios from 'axios';
 
@@ -57,6 +58,24 @@ export const signup = (data) => async dispatch => {
             payload: response.data
         });
 
+    } catch (err) {
+        if (err.response) {
+            console.log(err.response);
+        } else if (err.request) {
+            console.log(err.request);
+        } else {
+            console.log(err);
+        }
+    }
+}
+
+export const signout = () => async dispatch => {
+    try {
+        sessionStorage.removeItem('token');
+        dispatch({
+            type: FETCH_SIGNOUT_DATA_SUCCESS,
+            payload: 'loggedout'
+        })
     } catch (err) {
         if (err.response) {
             console.log(err.response);
