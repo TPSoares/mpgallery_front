@@ -128,15 +128,42 @@
 }
 
 .button-more-images {
-    display: flex;
-    justify-content: center;
+    /* display: flex; */
+    /* justify-content: center; */
 }
 
 .btn-more-images {
-    background-color: #6579ea;
-    border: none;
+    /* border: none;
     padding: 5px;
-    margin-top: 10px;
+    margin-top: 10px; */
+    color: #A5A5A5;
+
+}
+.btn-more-images:hover {
+    /* border: none;
+    padding: 5px;
+    margin-top: 10px; */
+    cursor: pointer;
+}
+
+.comment-field {
+    border-bottom: none;
+    margin: 0;
+}
+
+.comment-field:focus {
+    box-shadow: none;
+}
+
+.comment-form {
+    display: flex;
+    flex-direction: row;
+}
+
+.btn-comment {
+    background-color: #FFF;
+    color: #AAA;
+    border: 1px solid #A5A5A5;
 }
 
 /* END DASHBOARD IMAGES */

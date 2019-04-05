@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from "redux";
 import { connect } from 'react-redux';
-import { Button, Navbar } from 'react-bootstrap';
+import { Button, Navbar, Form, FormControl } from 'react-bootstrap';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 
 import { getAllPhotos } from '../actions/photos';
-import { getComments } from '../actions/comments';
+import { getComments, createComment } from '../actions/comments';
 
 class Dashboard extends Component {
     
@@ -72,13 +74,17 @@ class Dashboard extends Component {
         }
 
         if(this.props.comments.data !== nextProps.comments.data) {
+            console.log("NEXTTTTT:", nextProps.comments.data);
             let photos = [...this.state.photos];
                 let index = photos.findIndex(p => p.id === this.state.current_photo_id);
                 // console.log(this.state.current_photo_id);
-                nextProps.comments.data.forEach(comment => {
+                if(nextProps.comments.data) {
 
-                    photos[index].comments.push(comment);
-                });
+                    nextProps.comments.data.forEach(comment => {
+                        
+                        photos[index].comments.push(comment);
+                    });
+                }
 
                 // console.log(index);
 
@@ -91,6 +97,11 @@ class Dashboard extends Component {
     }
 
     render() {
+
+        const CommentSchema = Yup.object().shape({
+            comment: Yup.string()
+                .required('Comment is required'),
+        })
 
         if(this.props.photos.data && this.state.photos.length === 0) {
             // this.setState({ photos: [...this.state.photos, this.props.photos.data.data] })
@@ -137,21 +148,73 @@ class Dashboard extends Component {
                                         <p>{photo.likes.length} likes</p>
                                         <p className="card-text"><b>{photo.user.name}</b> {photo.description}</p>
                                         <hr></hr>
-                                        {photo.comments.map(comment => {
-                                            return (
-                                                <p key={comment.id}><b>{comment.user.name}</b> {comment.comment}</p>
-                                            )
-                                        })}
                                         <div className="button-more-images">
-                                        <Button className="btn btn-primary btn-more-images" onClick={async () => {
+                                        <p className="btn-more-images" onClick={async () => {
                                             await this.setState({current_photo_id: photo.id})
                                             await this.props.getComments(photo.id, photo.comments.length, 3);
                                             
                                             // photo.comments.current_page++;
                                             
                                             
-                                        }}>more comments</Button>
+                                        }}>Load more comments</p>
                                         </div>
+                                        {photo.comments.map(comment => {
+                                            return (
+                                                <p key={comment.id}><b>{comment.user.name}</b> {comment.comment}</p>
+                                            )
+                                        })}
+                                        <hr></hr>
+                                        <Formik
+                                        initialValues={{
+                                            comment: ''
+                                        }}
+                                        
+                                        onSubmit={async (values, {resetForm}) => {
+                                            try {
+                                                resetForm();
+                                                await this.props.createComment(photo.id, values.comment);
+                                                await this.setState({current_photo_id: photo.id})
+                                                photo.comments = [];
+                                                await this.props.getComments(photo.id, 0, 3);
+                                            } catch (err) {
+                                                console.log("Error: ", err);
+                                            }
+                                        }}
+                                        validationSchema={CommentSchema}
+                                        >
+            
+                                        { props => {
+                                        const {
+                                            values,
+                                            handleChange,
+                                            handleSubmit,
+                                            handleBlur,
+                                            handleReset,
+                                            resetForm,
+                                            errors,
+                                            touched,
+                                        } = props;
+                                        return (
+                                            <div>
+                                                 <Form onSubmit={handleSubmit} className="comment-form">
+                                                    <FormControl className="comment-field"
+                                                        type="text"
+                                                        name="comment" 
+                                                        placeholder="Add a comment..."
+                                                        value={values.comment || ''}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                    />
+
+                                                    <Button className="btn btn-primary btn-comment" type="submit">
+                                                        Send
+                                                    </Button>
+                                                </Form>
+                                            </div>
+                                        )
+                                           
+                                    }}
+                                        </Formik>
                                         {/* <p className="card-text">By: {photo.user.name}</p> */}
                                     </div>
                                 </div>
@@ -186,7 +249,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps (dispatch) {
-    return bindActionCreators({ getAllPhotos, getComments }, dispatch)
+    return bindActionCreators({ getAllPhotos, getComments, createComment }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
