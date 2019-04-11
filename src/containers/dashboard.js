@@ -4,11 +4,14 @@ import { connect } from 'react-redux';
 import { Button, Navbar, Form, FormControl } from 'react-bootstrap';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { Link } from 'react-router-dom';
 
 import { getAllPhotos } from '../actions/photos';
 import { getComments, createComment } from '../actions/comments';
 import { setLike } from '../actions/likes';
 import { signout } from '../actions/user';
+
+import PhotoCard from './photo_card';
 
 class Dashboard extends Component {
     
@@ -16,7 +19,7 @@ class Dashboard extends Component {
         super(props);
         this.state = {
             user: {},
-            page: 1,
+            offset: 0,
             photos: [],
             comment_limit: 3,
             current_photo_id: null
@@ -31,12 +34,12 @@ class Dashboard extends Component {
             //check
           (window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 1)
         ) {
-            console.log(this.state.page);
+            // console.log(this.state.offset);
             // async () => {
-                // console.log("PAGEBEFORE", this.state.page);
-                await this.setState({page: this.state.page + 1})
-                // console.log("PAGEAFTER", this.state.page);
-                this.props.getAllPhotos(this.state.page)
+                // console.log("offsetBEFORE", this.state.offset);
+                await this.setState({offset: this.state.offset + 5})
+                // console.log("offsetAFTER", this.state.offset);
+                this.props.getAllPhotos(this.state.offset)
             // }
         }
       }
@@ -48,38 +51,54 @@ class Dashboard extends Component {
             this.props.history.push("/");
         }
 
+
+
         // getAllPhotos();
     }
 
-    componentDidMount() {
-        window.addEventListener('scroll', this.onScroll, false);
+    // async componentDidUpdate() {
+    //     if(this.props.photos.length > 0) {
+    //         this.props.photos.forEach()
+    //     }
+    // }
 
+    componentDidMount() {
+        
+        window.addEventListener('scroll', this.onScroll, false);
         if(this.props.location.state) {
             this.setState({
                 user: this.props.location.state.data.user
             })
         }
 
-        this.props.getAllPhotos(this.state.page);
+        // when the user comes back, there are photos on the store state already
+        if(this.props.photos.length === 0) {
+            this.props.getAllPhotos(this.state.offset);
+
+        }
+        this.setState({offset: this.state.photos.length});
+
 
     }
 
     componentWillUnmount() {
+
         window.removeEventListener('scroll', this.onScroll, false);
       }
 
     componentWillReceiveProps(nextProps) {
-        if(this.props.photos.data !== nextProps.photos.data && this.state.photos.length !== 0) {
-            if(nextProps.photos.data) {
+        
+        if(this.props.photos !== nextProps.photos && this.state.photos.length !== 0) {
+            if(nextProps.photos) {
 
-                nextProps.photos.data.data.forEach(photo => {
+                nextProps.photos.forEach(photo => {
                     this.state.photos.push(photo);
                 });
             }
         }
 
         if(this.props.comments.data !== nextProps.comments.data) {
-            console.log("NEXTTTTT:", nextProps.comments.data);
+            // console.log("NEXTTTTT:", nextProps.comments.data);
             let photos = [...this.state.photos];
                 let index = photos.findIndex(p => p.id === this.state.current_photo_id);
                 // console.log(this.state.current_photo_id);
@@ -114,8 +133,8 @@ class Dashboard extends Component {
     }
 
     async removeTokenAndLogout() {
-        await this.setState({photos: []});
-        await this.setState({user: {}});
+        // await this.setState({photos: []});
+        // await this.setState({user: {}});
         sessionStorage.removeItem('token');
         this.props.history.push('/')
     }
@@ -127,19 +146,20 @@ class Dashboard extends Component {
                 .required('Comment is required'),
         })
 
-        if(this.props.photos.data && this.state.photos.length === 0) {
+        if(this.props.photos.length > 0 && this.state.photos.length === 0) {
             // this.setState({ photos: [...this.state.photos, this.props.photos.data.data] })
             // this.props.photos
-            this.props.photos.data.data.forEach(photo => {
+            this.props.photos.forEach(photo => {
                 this.state.photos.push(photo);
             });
-            console.log("AGORAVAI", this.state.photos)
+            // console.log("AGORAVAI", this.state.photos)
         }
 
-        console.log("NEWCOMMENTS: ", this.props.comments)
+        // console.log("NEWCOMMENTS: ", this.props.comments)
         console.log("NEW DATA: ", this.state.photos)
 
         return (
+            
             <div className="dashboard-bg">
 
                 <Navbar className="navbar navbar-light dashboard-nav d-flex">
@@ -147,9 +167,12 @@ class Dashboard extends Component {
                     Hello {this.state.user.name}
                 </div>
                 <div className="ml-auto p-2">
-                    <Button className="btn btn-primary my-auto signout-btn" type="submit">
-                        Edit
-                    </Button>
+                    <Link className="btn btn-primary my-auto signout-btn" to={{
+                        pathname: 'newphoto',
+                        state: this.props.location.state
+                    }}>
+                        + photo
+                    </Link>
                     <Button className="btn btn-primary my-auto signout-btn" type="submit" onClick={async () => {
                             await this.props.signout();
                             this.props.history.push("/");
@@ -163,10 +186,13 @@ class Dashboard extends Component {
                 <div className="container image-container">
                 
                     {
-                        this.props.photos.sucess &&
+                        this.props.photos &&
                         this.state.photos.map(photo => {
+
                             return (
                                 <div key={photo.id} className="card images">
+                                    {/* <div><PhotoCard photo={photo} /></div> */}
+
                                     <div className="card-header"><b>{photo.user.name}</b></div>
                                     <img className="card-img-top" src={photo.path} alt={photo.description}></img>
                                     <hr></hr>
@@ -187,7 +213,7 @@ class Dashboard extends Component {
                                             await this.setState({current_photo_id: photo.id})
                                             await this.props.getComments(photo.id, photo.comments.length, 3);
                                             
-                                            // photo.comments.current_page++;
+                                            // photo.comments.current_offset++;
                                             
                                             
                                         }}>Load more comments</p>
@@ -249,28 +275,15 @@ class Dashboard extends Component {
                                            
                                     }}
                                         </Formik>
-                                        {/* <p className="card-text">By: {photo.user.name}</p> */}
                                     </div>
+
                                 </div>
                             )
                         })
                     }
-                    {/* {this.props.photos.data[0].id} */}
                 </div>
-
-                {/* <Button className="btn btn-primary my-auto signout-btn" type="submit" 
-                    onClick={async () => {
-                        // console.log("PAGEBEFORE", this.state.page);
-                        await this.setState({page: this.state.page + 1})
-                        // console.log("PAGEAFTER", this.state.page);
-                        this.props.getAllPhotos(this.state.page)
-                    }
-                    }>
-                        +
-                </Button> */}
-                
             </div>
-            
+
         )
     }
 }

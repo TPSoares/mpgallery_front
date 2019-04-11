@@ -13,7 +13,7 @@ const appReducer = combineReducers({
 
 const rootReducer = (state, action) => {
     let token = sessionStorage.getItem('token');
-    console.log(token);
+    // console.log(token);
     if (!token || token === null) {
         state = undefined;
     }
