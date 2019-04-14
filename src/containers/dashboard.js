@@ -6,6 +6,8 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { Link } from 'react-router-dom';
 
+import { FaUserAlt } from 'react-icons/fa';
+
 import { getAllPhotos } from '../actions/photos';
 import { getComments, createComment } from '../actions/comments';
 import { setLike } from '../actions/likes';
@@ -193,7 +195,7 @@ class Dashboard extends Component {
                                 <div key={photo.id} className="card images">
                                     {/* <div><PhotoCard photo={photo} /></div> */}
 
-                                    <div className="card-header"><b>{photo.user.name}</b></div>
+                                    <div className="card-header">{photo.user.profile_picture ? <img className="user-icon" src={photo.user.profile_picture}></img> : <FaUserAlt size="2.5em" color="#CCC" className="user-icon" />}  <b>{photo.user.name}</b></div>
                                     <img className="card-img-top" src={photo.path} alt={photo.description}></img>
                                     <hr></hr>
                                     <div className="card-body">

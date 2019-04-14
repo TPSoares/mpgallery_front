@@ -168,3 +168,16 @@
 }
 
 /* END DASHBOARD IMAGES */
+
+
+/* USER ICON IMAGES */
+
+.user-icon {
+    border: 1px solid #6579ea;
+    border-radius: 100%;
+    border-color: #CCC;
+    width: 2.5em;
+    height: 2.5em;
+}
+
+/* END USER ICON IMAGES */
