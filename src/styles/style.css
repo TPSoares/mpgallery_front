@@ -201,3 +201,20 @@
 }
 
 /* END USER ICON IMAGES */
+
+/* USER PROFILE */
+
+.user_images {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.image img {
+    margin: 15px;
+    width: 300px;
+    height: 300px;
+}
+
+/* END USER PROFILE */

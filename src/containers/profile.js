@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from "redux";
 import { connect } from 'react-redux';
+
 import Nav from '../components/Navbar';
+
+import { userPhotos } from '../actions/user';
 
 class Profile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            photo: {},
+            user_photos: [],
             user: {}
         }
     }
@@ -29,15 +32,42 @@ class Profile extends Component {
             })
         }
 
+        this.props.userPhotos();
 
+    }
+
+    componentWillReceiveProps(nextProps) {
+        
+        if(this.props.user.photos !== nextProps.user.photos) {
+            if(nextProps.user.photos) {
+                // console.log(nextProps.user.photos);
+
+                nextProps.user.photos.data.forEach(photo => {
+                    // console.log(photo);
+                    this.state.user_photos.push(photo);
+                });
+            }
+        }
     }
 
     render() {
         return(
-            <div>
+            <div className="dashboard-bg">
                 <Nav {...this.props} />
 
-                {console.log("USER: ", this.state.user)}
+                {console.log("USER: ", this.state.user_photos)}
+
+                <div className="container user_images">
+                {
+                    this.state.user_photos.map(photo => {
+                        return (
+                                <div key={photo.id}  className="image">
+                                    <img src={photo.path}></img>
+                                </div>
+                        )   
+                    })
+                }
+                </div>
             </div>
         )
     }
@@ -53,7 +83,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps (dispatch) {
-    return bindActionCreators({}, dispatch)
+    return bindActionCreators({userPhotos}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

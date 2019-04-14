@@ -2,7 +2,9 @@ import {
     FETCH_SIGNIN_DATA_SUCCESS, 
     FETCH_SIGNUP_DATA_SUCCESS,
     FETCH_SIGNIN_DATA_FAIL,
-    FETCH_SIGNOUT_DATA_SUCCESS
+    FETCH_SIGNOUT_DATA_SUCCESS,
+    FETCH_USER_PHOTOS_DATA_SUCCESS,
+    FETCH_USER_PHOTOS_DATA_FAIL
 } from './types';
 import axios from 'axios';
 
@@ -35,6 +37,37 @@ export const signin = (email, password) => async dispatch => {
                 console.log(err);
             }
         }
+}
+
+export const userPhotos = () => async dispatch => {
+    const request = `http://laravelteste.webdev-solutions.com/public/api/user/photos`;
+    const token = sessionStorage.getItem('token');
+    const headers = {
+        'Authorization': 'Bearer ' + token
+    }
+    
+    try {
+        const response = await axios.get(request, {headers});
+
+        // console.log(response);
+        dispatch({
+            type: FETCH_USER_PHOTOS_DATA_SUCCESS,
+            payload: response.data
+        })
+    } catch (err) {
+        if (err.response) {
+            console.log("TOKEN", token);
+            console.log(err.response);
+            dispatch({
+                type: FETCH_USER_PHOTOS_DATA_FAIL,
+                payload: err.response.data
+            })
+        } else if (err.request) {
+            console.log(err.request);
+        } else {
+            console.log(err);
+        }
+    }
 }
 
 export const signup = (data) => async dispatch => {
