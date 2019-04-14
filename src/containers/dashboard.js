@@ -7,6 +7,9 @@ import * as Yup from 'yup';
 import { Link } from 'react-router-dom';
 
 import { FaUserAlt } from 'react-icons/fa';
+import { FiHeart, FiUser } from 'react-icons/fi';
+import { IoMdSend, IoIosLogOut } from 'react-icons/io';
+import { MdAddAPhoto } from 'react-icons/md';
 
 import { getAllPhotos } from '../actions/photos';
 import { getComments, createComment } from '../actions/comments';
@@ -167,20 +170,28 @@ class Dashboard extends Component {
 
                 <Navbar className="navbar navbar-light dashboard-nav d-flex">
                 <div className="p2" style={{color: "#FFF"}}>
-                    Hello {this.state.user.name}
+                {this.state.user.profile_picture ? <img className="user-icon" src={this.state.user.profile_picture}></img> : <FaUserAlt size="2.5em" color="#CCC" className="user-icon" />}  <b>{this.state.user.name}</b>
                 </div>
                 <div className="ml-auto p-2">
-                    <Link className="btn btn-primary my-auto signout-btn" to={{
+
+                    <Link className="my-auto nav-items" to={{
+                        pathname: 'profile',
+                        state: this.props.location.state
+                    }}>
+                        <FiUser size="2em" color="#FFF"/>
+                    </Link>
+                    
+                    <Link className="my-auto nav-items" to={{
                         pathname: 'newphoto',
                         state: this.props.location.state
                     }}>
-                        + photo
+                        <MdAddAPhoto size="2em" color="#FFF"/>
                     </Link>
-                    <Button className="btn btn-primary my-auto signout-btn" type="submit" onClick={async () => {
+                    <Button className="my-auto nav-items" style={{padding: 0}} type="submit" onClick={async () => {
                             await this.props.signout();
                             this.props.history.push("/");
                         }}>
-                        Signout
+                        <IoIosLogOut size="2em" color="#FFF"/>
                     </Button>
                 </div>
                 </Navbar>
@@ -200,15 +211,18 @@ class Dashboard extends Component {
                                     <img className="card-img-top" src={photo.path} alt={photo.description}></img>
                                     <hr></hr>
                                     <div className="card-body">
-                                        <Button className="btn btn-primary btn-comment"  onClick={async () => {
-                                            await this.setState({current_photo_id: photo.id});
-                                            await this.props.setLike(photo.id);
-                                        }}>{
-                                            //GG!
-                                            photo.likes.findIndex(like => like.user_id === this.state.user.id) === -1 ? "Like" : "Liked"
-                                        }</Button>
-                                        {/* <h3 className="card-title">{photo.title}</h3> */}
-                                        <p>{photo.likes.length} likes</p>
+                                        <div className="like">
+                                            <Button className="like-buttom" onClick={async () => {
+                                                await this.setState({current_photo_id: photo.id});
+                                                await this.props.setLike(photo.id);
+                                            }}>{
+                                                //GG!
+                                                // photo.likes.findIndex(like => like.user_id === this.state.user.id) === -1 ? "Like" : "Liked"
+                                                photo.likes.findIndex(like => like.user_id === this.state.user.id) === -1 ? <FiHeart size="1.5em" /> : <FiHeart size="1.5em" color="#D00" style={{underlay: "#D00"}} />
+                                            }</Button>
+                                            {/* <h3 className="card-title">{photo.title}</h3> */}
+                                            {photo.likes.length === 1 ? <p>{photo.likes.length} Like</p> : <p>{photo.likes.length} Likes</p>}
+                                        </div>
                                         <p className="card-text"><b>{photo.user.name}</b> {photo.description}</p>
                                         <hr></hr>
                                         <div className="button-more-images">
@@ -269,8 +283,8 @@ class Dashboard extends Component {
                                                         onBlur={handleBlur}
                                                     />
 
-                                                    <Button className="btn btn-primary btn-comment" type="submit">
-                                                        Send
+                                                    <Button type="submit">
+                                                        <IoMdSend size="1.5em" color="#A5A5A5" />
                                                     </Button>
                                                 </Form>
                                             </div>
