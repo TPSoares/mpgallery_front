@@ -11,12 +11,11 @@ import { FiHeart, FiUser } from 'react-icons/fi';
 import { IoMdSend, IoIosLogOut } from 'react-icons/io';
 import { MdAddAPhoto } from 'react-icons/md';
 
+import Nav from '../components/Navbar';
+
 import { getAllPhotos } from '../actions/photos';
 import { getComments, createComment } from '../actions/comments';
 import { setLike } from '../actions/likes';
-import { signout } from '../actions/user';
-
-import PhotoCard from './photo_card';
 
 class Dashboard extends Component {
     
@@ -162,13 +161,16 @@ class Dashboard extends Component {
         // }
 
         // console.log("NEWCOMMENTS: ", this.props.comments)
-        console.log("NEW DATA: ", this.state.photos)
+        console.log("NEW DATA: ", this.state.user)
 
         return (
             
             <div className="dashboard-bg">
 
-                <Navbar className="navbar navbar-light dashboard-nav d-flex">
+                <Nav {...this.props} />
+
+
+                {/* <Navbar className="navbar navbar-light dashboard-nav d-flex">
                 <div className="p2" style={{color: "#FFF"}}>
                 {this.state.user.profile_picture ? <img className="user-icon" src={this.state.user.profile_picture}></img> : <FaUserAlt size="2.5em" color="#CCC" className="user-icon" />}  <b>{this.state.user.name}</b>
                 </div>
@@ -194,7 +196,7 @@ class Dashboard extends Component {
                         <IoIosLogOut size="2em" color="#FFF"/>
                     </Button>
                 </div>
-                </Navbar>
+                </Navbar> */}
                 {/* {console.log("ENTROU!: ", this.props.photos.data)} */}
 
                 <div className="container image-container">
@@ -315,7 +317,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps (dispatch) {
-    return bindActionCreators({ getAllPhotos, getComments, createComment, setLike, signout }, dispatch)
+    return bindActionCreators({ getAllPhotos, getComments, createComment, setLike }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
