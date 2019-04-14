@@ -74,11 +74,11 @@ class Dashboard extends Component {
         }
 
         // when the user comes back, there are photos on the store state already
-        if(this.props.photos.length === 0) {
-            this.props.getAllPhotos(this.state.offset);
+        // if(this.props.photos.length === 0) {
+        this.props.getAllPhotos(this.state.offset);
 
-        }
-        this.setState({offset: this.state.photos.length});
+        // }
+        // this.setState({offset: this.state.photos.length});
 
 
     }
@@ -89,8 +89,9 @@ class Dashboard extends Component {
       }
 
     componentWillReceiveProps(nextProps) {
+
         
-        if(this.props.photos !== nextProps.photos && this.state.photos.length !== 0) {
+        if(this.props.photos !== nextProps.photos) {
             if(nextProps.photos) {
 
                 nextProps.photos.forEach(photo => {
@@ -148,14 +149,14 @@ class Dashboard extends Component {
                 .required('Comment is required'),
         })
 
-        if(this.props.photos.length > 0 && this.state.photos.length === 0) {
-            // this.setState({ photos: [...this.state.photos, this.props.photos.data.data] })
-            // this.props.photos
-            this.props.photos.forEach(photo => {
-                this.state.photos.push(photo);
-            });
-            // console.log("AGORAVAI", this.state.photos)
-        }
+        // if(this.props.photos.length > 0 && this.state.photos.length === 0) {
+        //     // this.setState({ photos: [...this.state.photos, this.props.photos.data.data] })
+        //     // this.props.photos
+        //     this.props.photos.forEach(photo => {
+        //         this.state.photos.push(photo);
+        //     });
+        //     // console.log("AGORAVAI", this.state.photos)
+        // }
 
         // console.log("NEWCOMMENTS: ", this.props.comments)
         console.log("NEW DATA: ", this.state.photos)
