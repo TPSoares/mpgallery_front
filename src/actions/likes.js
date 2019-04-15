@@ -6,7 +6,7 @@ import {
 import axios from 'axios';
 
 export const setLike = (photo) => async dispatch => {
-    const request = `http://laravelteste.webdev-solutions.com/public/api/photos/${photo}/like`;
+    const request = `http://api-mpgallery.tpsoares.com/public/api/photos/${photo}/like`;
     const token = sessionStorage.getItem('token');
     const headers = {
         'Authorization': 'Bearer ' + token

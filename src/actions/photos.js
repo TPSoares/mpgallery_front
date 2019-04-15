@@ -6,7 +6,7 @@ import {
 import axios from 'axios';
 
 export const getAllPhotos = (offset) => async (dispatch) => {
-    const request = `http://laravelteste.webdev-solutions.com/public/api/photos/offset/${offset}`;
+    const request = `http://api-mpgallery.tpsoares.com/public/api/photos/offset/${offset}`;
     const token = sessionStorage.getItem('token');
     const headers = {
         'Authorization': 'Bearer ' + token
@@ -37,7 +37,7 @@ export const getAllPhotos = (offset) => async (dispatch) => {
 }
 
 export const postImage = (data) => async dispatch => {
-    const request = `http://laravelteste.webdev-solutions.com/public/api/photos/store`;
+    const request = `http://api-mpgallery.tpsoares.com/public/api/photos/store`;
     const token = sessionStorage.getItem('token');
     const headers = {
         'Authorization': 'Bearer ' + token,

@@ -9,7 +9,7 @@ import {
 import axios from 'axios';
 
 export const signin = (email, password) => async dispatch => {
-    const request = "http://laravelteste.webdev-solutions.com/public/api/signin";
+    const request = "http://api-mpgallery.tpsoares.com/public/api/signin";
         
         try {
             const response = await axios.post(request, {
@@ -40,7 +40,7 @@ export const signin = (email, password) => async dispatch => {
 }
 
 export const userPhotos = () => async dispatch => {
-    const request = `http://laravelteste.webdev-solutions.com/public/api/user/photos`;
+    const request = `http://api-mpgallery.tpsoares.com/public/api/user/photos`;
     const token = sessionStorage.getItem('token');
     const headers = {
         'Authorization': 'Bearer ' + token
@@ -71,7 +71,7 @@ export const userPhotos = () => async dispatch => {
 }
 
 export const signup = (data) => async dispatch => {
-    const request = "http://laravelteste.webdev-solutions.com/public/api/signup";
+    const request = "http://api-mpgallery.tpsoares.com/public/api/signup";
 
     // console.log(data);
     try {

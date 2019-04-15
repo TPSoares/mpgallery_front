@@ -8,7 +8,7 @@ import {
 import axios from 'axios';
 
 export const getComments = (photo, offset, limit) => async dispatch => {
-    const request = `http://laravelteste.webdev-solutions.com/public/api/photos/${photo}/comment/offset/${offset}/limit/${limit}`;
+    const request = `http://api-mpgallery.tpsoares.com/public/api/photos/${photo}/comment/offset/${offset}/limit/${limit}`;
 
     const token = sessionStorage.getItem('token');
     const headers = {
@@ -40,7 +40,7 @@ export const getComments = (photo, offset, limit) => async dispatch => {
 }
 
 export const createComment = (photo, comment) => async dispatch => {
-    const request = `http://laravelteste.webdev-solutions.com/public/api/photos/${photo}/comment`;
+    const request = `http://api-mpgallery.tpsoares.com/public/api/photos/${photo}/comment`;
 
     const token = sessionStorage.getItem('token');
     const headers = {
