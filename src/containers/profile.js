@@ -7,6 +7,8 @@ import Nav from '../components/Navbar';
 
 import { userPhotos } from '../actions/user';
 
+import { FaUserAlt } from 'react-icons/fa';
+
 class Profile extends Component {
     constructor(props) {
         super(props);
@@ -61,7 +63,7 @@ class Profile extends Component {
                 <div className="container user-info">
                     <div className="user-photo col-4">
                     
-                        <img src={this.state.user.profile_picture}></img>
+                        {this.state.user.profile_picture ? <img src={this.state.user.profile_picture}></img> : <FaUserAlt style={{width: "100px", height: "100px", borderRadius: "100%"}} />}
                     </div>
                     <div className="user-data col-8">
                         <div className="user-info"><h4>{this.state.user.name}</h4> 
