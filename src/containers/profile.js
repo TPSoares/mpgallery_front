@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from "redux";
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import Nav from '../components/Navbar';
 
@@ -55,9 +56,28 @@ class Profile extends Component {
             <div className="dashboard-bg">
                 <Nav {...this.props} />
 
-                {console.log("USER: ", this.state.user_photos)}
+                {console.log("USER: ", this.state.user)}
 
-                <div className="container user_images">
+                <div className="container user-info">
+                    <div className="user-photo col-4">
+                    
+                        <img src={this.state.user.profile_picture}></img>
+                    </div>
+                    <div className="user-data col-8">
+                        <div className="user-info"><h4>{this.state.user.name}</h4> 
+                            <Link className="my-auto btn-edit-info" to={{
+                                pathname: 'edit',
+                                state: this.props.location.state
+                            }}>
+                                Editar perfil
+                            </Link>
+                        </div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
+
+                <div className="container col-10 user_images">
                 {
                     this.state.user_photos.map(photo => {
                         return (
