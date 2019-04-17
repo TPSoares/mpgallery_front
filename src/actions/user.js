@@ -4,7 +4,9 @@ import {
     FETCH_SIGNIN_DATA_FAIL,
     FETCH_SIGNOUT_DATA_SUCCESS,
     FETCH_USER_PHOTOS_DATA_SUCCESS,
-    FETCH_USER_PHOTOS_DATA_FAIL
+    FETCH_USER_PHOTOS_DATA_FAIL,
+    FETCH_USER_INFO_DATA_SUCCESS,
+    FETCH_USER_INFO_DATA_FAIL
 } from './types';
 import axios from 'axios';
 
@@ -16,7 +18,7 @@ export const signin = (email, password) => async dispatch => {
                 email: email,
                 password: password
             });
-
+            console.log(response);
             //get token and store it on session
             sessionStorage.setItem('token', response.data.data.token);
 
@@ -109,6 +111,41 @@ export const signout = () => async dispatch => {
             type: FETCH_SIGNOUT_DATA_SUCCESS,
             payload: 'loggedout'
         })
+    } catch (err) {
+        if (err.response) {
+            console.log(err.response);
+        } else if (err.request) {
+            console.log(err.request);
+        } else {
+            console.log(err);
+        }
+    }
+}
+
+export const edit = (data) => async dispatch => {
+    const request = "http://api-mpgallery.tpsoares.com/public/api/user/edit";
+    const token = sessionStorage.getItem('token');
+    const headers = {
+        'Authorization': 'Bearer ' + token,
+        // 'Content-Type': 'multipart/form-data',
+        // 'Access-Control-Allow-Origin': '*'
+    }
+    // console.log(data);
+    try {
+        const response = await axios.put(request, {
+            name: data.name,
+            email: data.email,
+            age: data.age,
+            gender: data.gender
+        }, {headers});
+
+        console.log(response);
+
+        dispatch({
+            type: FETCH_USER_INFO_DATA_SUCCESS,
+            payload: response.data
+        });
+
     } catch (err) {
         if (err.response) {
             console.log(err.response);

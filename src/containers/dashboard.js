@@ -69,9 +69,14 @@ class Dashboard extends Component {
     componentDidMount() {
         
         window.addEventListener('scroll', this.onScroll, false);
-        if(this.props.location.state) {
+        // if(this.props.location.state) {
+        //     this.setState({
+        //         user: this.props.location.state.data.user
+        //     })
+        // }
+        if(this.props.user) {
             this.setState({
-                user: this.props.location.state.data.user
+                user: this.props.user.data
             })
         }
 

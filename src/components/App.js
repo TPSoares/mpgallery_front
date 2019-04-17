@@ -5,6 +5,7 @@ import Signup from '../containers/signup';
 import Dashboard from '../containers/dashboard';
 import PhotoForm from '../containers/photoform';
 import Profile from '../containers/profile';
+import Edit from '../containers/edit';
 class App extends Component {
 
 
@@ -19,6 +20,7 @@ class App extends Component {
                         <Route path="/signup" component={Signup} />
                         <Route path="/newphoto" component={PhotoForm} />
                         <Route path="/profile" component={Profile} />
+                        <Route path="/edit" component={Edit} />
                     </div>
                 </BrowserRouter>
             </div>

@@ -102,6 +102,15 @@
     padding-right: 20px;
 }
 
+.nav-items-logo {
+    color: #FFF;
+}
+
+.nav-items-logo:hover {
+    color: #FFF;
+    text-decoration-line: none;
+}
+
 /* END NAVBAR DASHBOARD */
 
 /* DASHBOARD IMAGES */

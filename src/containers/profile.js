@@ -24,17 +24,26 @@ class Profile extends Component {
         if(!token || token === null) {
             this.props.history.push("/");
         }
-
     }
 
 
     componentDidMount() {
-        if(this.props.location.state) {
+        // console.log("USERSTATE: ", this.state.user);
+        // if(this.props.location.state) {
+        //     console.log("NEW STATE: ", this.props.location.state.data.user);
+        //     this.setState({
+        //         user: this.props.location.state.data.user
+        //     })
+        // }
+
+        if(this.props.user) {
             this.setState({
-                user: this.props.location.state.data.user
+                user: this.props.user.data
             })
         }
-
+        
+        
+        
         this.props.userPhotos();
 
     }
@@ -54,6 +63,10 @@ class Profile extends Component {
     }
 
     render() {
+
+        console.log("PROPS: ", this.props);
+
+
         return(
             <div className="dashboard-bg">
                 <Nav {...this.props} />
@@ -71,7 +84,7 @@ class Profile extends Component {
                                 pathname: 'edit',
                                 state: this.props.location.state
                             }}>
-                                Editar perfil
+                                Edit profile
                             </Link>
                         </div>
                         <div></div>

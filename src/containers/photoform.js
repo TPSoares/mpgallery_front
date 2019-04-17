@@ -48,6 +48,14 @@ class PhotoForm extends Component {
         }
       }
     
+      componentWillMount() {
+          
+        let token = sessionStorage.getItem('token');
+        if(!token || token === null) {
+            this.props.history.push("/");
+        }
+      }
+
     componentDidMount() {
         
         if(this.props.location.state) {

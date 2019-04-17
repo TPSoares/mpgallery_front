@@ -23,6 +23,9 @@ class Nav extends Component {
     }
 
     componentDidMount() {
+
+        console.log("NAV:",this.props);
+
         if(this.props.location.state) {
             this.setState({
                 user: this.props.location.state.data.user
@@ -36,7 +39,13 @@ class Nav extends Component {
         return (
             <Navbar className="navbar navbar-light dashboard-nav d-flex">
                 <div className="p2" style={{color: "#FFF"}}>
-                {this.state.user.profile_picture ? <img className="user-icon" src={this.state.user.profile_picture}></img> : <FaUserAlt size="2.5em" color="#CCC" className="user-icon" />}  <b>{this.state.user.name}</b>
+                {/* {this.state.user.profile_picture ? <img className="user-icon" src={this.state.user.profile_picture}></img> : <FaUserAlt size="2.5em" color="#CCC" className="user-icon" />}  <b>{this.state.user.name}</b> */}
+                <Link className="my-auto nav-items-logo" to={{
+                        pathname: 'dashboard',
+                        state: this.props.location.state
+                    }}>
+                        MPGALLERY
+                    </Link>
                 </div>
                 <div className="ml-auto p-2">
 

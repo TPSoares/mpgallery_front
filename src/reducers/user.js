@@ -4,7 +4,8 @@ import {
     FETCH_SIGNIN_DATA_FAIL,
     FETCH_SIGNOUT_DATA_SUCCESS,
     FETCH_USER_PHOTOS_DATA_SUCCESS,
-    FETCH_USER_PHOTOS_DATA_FAIL
+    FETCH_USER_PHOTOS_DATA_FAIL,
+    FETCH_USER_INFO_DATA_SUCCESS
 } from '../actions/types';
 
 
@@ -17,7 +18,6 @@ import {
 //             return state;
 //     }
 // }
-
 
 export default function(state = [], action) {
     // console.log(action);
@@ -34,6 +34,8 @@ export default function(state = [], action) {
             return {...state, photos: action.payload};
         case FETCH_USER_PHOTOS_DATA_FAIL:
             return {...state, photos: action.payload};
+        case FETCH_USER_INFO_DATA_SUCCESS:
+            return action.payload;
         default:
             return state;
     }
