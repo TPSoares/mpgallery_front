@@ -8,6 +8,7 @@ import thunk from "redux-thunk";
 import axios from 'axios';
 window.axios = axios;
 
+// START SAVE STATE
 const loadState = () => {
     try {
       const serializedState = localStorage.getItem('state');
@@ -28,6 +29,8 @@ const loadState = () => {
       // Ignore write errors;
     }
   };
+
+// END SAVE STATE
 
 const store = createStore(Reducers, loadState() , applyMiddleware(thunk));
 store.subscribe(() => {
