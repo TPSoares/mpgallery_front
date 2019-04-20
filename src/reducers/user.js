@@ -5,7 +5,9 @@ import {
     FETCH_SIGNOUT_DATA_SUCCESS,
     FETCH_USER_PHOTOS_DATA_SUCCESS,
     FETCH_USER_PHOTOS_DATA_FAIL,
-    FETCH_USER_INFO_DATA_SUCCESS
+    FETCH_USER_INFO_DATA_SUCCESS,
+    FETCH_USER_PROFILE_PICTURE_SUCCESS,
+    FETCH_USER_PROFILE_PICTURE_FAIL
 } from '../actions/types';
 
 
@@ -35,6 +37,8 @@ export default function(state = [], action) {
         case FETCH_USER_PHOTOS_DATA_FAIL:
             return {...state, photos: action.payload};
         case FETCH_USER_INFO_DATA_SUCCESS:
+            return action.payload;
+        case FETCH_USER_PROFILE_PICTURE_SUCCESS:
             return action.payload;
         default:
             return state;

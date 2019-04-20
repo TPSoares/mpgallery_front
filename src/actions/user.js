@@ -6,7 +6,9 @@ import {
     FETCH_USER_PHOTOS_DATA_SUCCESS,
     FETCH_USER_PHOTOS_DATA_FAIL,
     FETCH_USER_INFO_DATA_SUCCESS,
-    FETCH_USER_INFO_DATA_FAIL
+    FETCH_USER_INFO_DATA_FAIL,
+    FETCH_USER_PROFILE_PICTURE_SUCCESS,
+    FETCH_USER_PROFILE_PICTURE_FAIL
 } from './types';
 import axios from 'axios';
 
@@ -156,3 +158,41 @@ export const edit = (data) => async dispatch => {
         }
     }
 }
+
+export const setProfilePicture = (picture) => async dispatch => {
+    const request = `http://api-mpgallery.tpsoares.com/public/api/user/profile_picture`;
+    const token = sessionStorage.getItem('token');
+    const headers = {
+        'Authorization': 'Bearer ' + token,
+        // 'Content-Type': 'multipart/form-data',
+        // 'Access-Control-Allow-Origin': '*'
+    }
+
+    // console.log("IMMAGE ACTION: ", picture);
+    
+    try {
+        const response = await axios.post(request, {
+            image: picture
+        }, {headers});
+
+        console.log(response);
+        
+        dispatch({
+            type: FETCH_USER_PROFILE_PICTURE_SUCCESS,
+            payload: response.data
+        })
+    } catch (err) {
+        if (err.response) {
+            // console.log("TOKEN", token);
+            console.log(err.response);
+            dispatch({
+                type: FETCH_USER_PROFILE_PICTURE_FAIL,
+                payload: err.response.data
+            })
+        } else if (err.request) {
+            console.log(err.request);
+        } else {
+            console.log(err);
+        }
+    }
+} 

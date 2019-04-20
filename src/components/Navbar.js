@@ -63,8 +63,8 @@ class Nav extends Component {
                         <MdAddAPhoto size="2em" color="#FFF"/>
                     </Link>
                     <Button className="my-auto nav-items" style={{padding: 0}} type="submit" onClick={async () => {
-                            await this.props.signout();
-                            this.props.history.push("/");
+                        this.props.history.push("/");
+                        await this.props.signout();
                         }}>
                         <IoIosLogOut size="2em" color="#FFF"/>
                     </Button>

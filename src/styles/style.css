@@ -226,6 +226,10 @@
     justify-content: center;
 }
 
+.user-photo:hover {
+    cursor: pointer;
+}
+
 .user-photo img {
     /* margin-left: 10px; */
     width: 150px;
@@ -259,7 +263,54 @@
     height: 300px;
 }
 
+
 /* END USER PROFILE */
+
+/* IMAGE UPLOAD */
+
+input[type="file"] {
+    display: none;
+}
+
+.image-upload {
+    border: 1px solid #ccc;
+    display: flex;
+    justify-content: center;
+    padding: 12px 12px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: #6579ea;
+}
+
+.profile-picture-upload {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    align-self: flex-end;
+}
+
+.profile-picture-upload-button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 400px;
+    height: 200px;
+    background-color: #FFF;
+    border-radius: 20px;
+    margin-left: calc(50% - 200px);
+    margin-top: calc(25% - 100px);
+}
+
+.profile-picture-cancel {
+    border: none;
+    background-color: #FFF;
+    color: #ea6565
+}
+
+/* END IMAGE UPLOAD */
 
 .col-1 {width: 8.33%;}
 .col-2 {width: 16.66%;}

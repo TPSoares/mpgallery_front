@@ -136,16 +136,19 @@ class PhotoForm extends Component {
                                 /> 
                                 {errors.description && touched.description && <div className="input-feedback" >{errors.description}</div>}
                                 
-                                <input className="form-control"
-                                type="file" 
-                                name="image" 
-                                placeholder="Image"
-                                onChange={this.handleImageChange}
-                                
-                                // setFieldValue={setFieldValue}
-                                // onBlur={handleBlur}
-                                /> 
-                                {/* {errors.image && touched.image && <div className="input-feedback" >{errors.image}</div>} */}
+                                <label className="image-upload">
+                                    <input className="form-control"
+                                    type="file" 
+                                    name="image" 
+                                    placeholder="Image"
+                                    onChange={this.handleImageChange}
+                                    
+                                    // setFieldValue={setFieldValue}
+                                    // onBlur={handleBlur}
+                                    /> 
+                                    {/* {errors.image && touched.image && <div className="input-feedback" >{errors.image}</div>} */}
+                                Choose image
+                                </label>
                                
                                 <Button className="btn btn-primary signin-btn" type="submit" disabled={isSubmitting}>
                                     Post photo

@@ -1,49 +1,58 @@
 import React, { Component } from 'react';
 import "../styles/style.css";
-import { Button, Navbar, Form, FormControl } from 'react-bootstrap';
+import Modal from 'react-modal';
 
 class ProfilePictureModal extends Component {
 
+    constructor(props) {
+        super(props);
+    }
+  
     
     render() {
 
-        const showHideClassName = this.props.show ? "modal display-block" : "modal display-none";
-       
+        console.log(this.props)
         return (
             
-            <div className={showHideClassName}>
-      <section className="modal-main">
-            asd
-        <button onClick={this.props.handleClose}>close</button>
-      </section>
-    </div>
-            // <div className={showHideClassName}>
+        <div>    
+            
+                <Modal className="profile-picture-upload-button" style={{
+                overlay: {
+                backgroundColor: 'rgba(128, 128, 128, 0.75)'
+                }}}
+                isOpen={this.props.modalIsOpen}
+                onAfterOpen={this.afterOpenModal}
+                onRequestClose={this.props.closeModal}
+                // style={customStyles}
+                contentLabel="Example Modal"
+                >
 
-            // <div className="modal" id="myModal">
-            //     <div className="modal-dialog">
-            //         <div className="modal-content">
+                <h5>Change profile picture</h5>
 
-            //         <div className="modal-header">
-            //             <h4 className="modal-title">Modal Heading</h4>
-            //             <button type="button" className="close" data-dismiss="modal">&times;</button>
-            //         </div>
+                <label className="image-upload">
+                    <input 
+                    // encType="multipart/form-data"
+                    className="form-control"
+                    type="file" 
+                    name="image" 
+                    placeholder="Image"
+                    onChange={this.props.handleImageChange}
+                    
+                    // setFieldValue={setFieldValue}
+                    // onBlur={handleBlur}
+                    /> 
+                    {/* {errors.image && touched.image && <div className="input-feedback" >{errors.image}</div>} */}
+                Choose image
 
-            //         <div className="modal-body">
-            //             Modal body..
-            //         </div>
+                </label>
 
-            //         <div className="modal-footer">
-            //             <button type="button" className="btn btn-danger" data-dismiss="modal">Close</button>
-            //         </div>
-
-            //         </div>
-            //     </div>
-            // </div>
-            // </div>
+                <button className="profile-picture-cancel" onClick={this.props.closeModal}>Cancel</button>
+                </Modal>
+        </div>
         )
     }
 }
 
 
-export default (ProfilePictureModal);
+export default ProfilePictureModal;
 

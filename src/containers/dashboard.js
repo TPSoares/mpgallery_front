@@ -26,13 +26,15 @@ class Dashboard extends Component {
             offset: 0,
             photos: [],
             comment_limit: 3,
-            current_photo_id: null
+            current_photo_id: null,
         }
 
         this.removeTokenAndLogout = this.removeTokenAndLogout.bind(this);   
-        this.onScroll = this.onScroll.bind(this);   
+        this.onScroll = this.onScroll.bind(this);
+        
     }
 
+   
     onScroll = async () => {
         if (
             //check

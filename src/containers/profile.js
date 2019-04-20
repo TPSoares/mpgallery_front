@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import Nav from '../components/Navbar';
+import ProfilePictureModal from './profilePictureModal';
 
-import { userPhotos } from '../actions/user';
+import { userPhotos, setProfilePicture } from '../actions/user';
 
 import { FaUserAlt } from 'react-icons/fa';
 
@@ -14,9 +15,62 @@ class Profile extends Component {
         super(props);
         this.state = {
             user_photos: [],
-            user: {}
+            user: {},
+            modalIsOpen: false,
+            file: undefined,
+
         }
+
+        this.openModal = this.openModal.bind(this);
+        this.afterOpenModal = this.afterOpenModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);   
+        this.handleImageChange = this.handleImageChange.bind(this);
+
     }
+
+    handleImageChange(e) {
+        e.preventDefault();
+        let reader = new FileReader();
+        let file = e.target.files[0];
+        if (file) {
+            console.log(file);
+          reader.onloadend = async (e) => {
+            await this.setState({
+              file: e.target.result
+
+            
+            //    {
+            //       name: file.name,
+            //       size: file.size,
+            //       type: file.type
+            //   },
+            //   imagePreviewUrl: reader.result
+            });
+            // console.log(this.state.file);
+            this.props.setProfilePicture(this.state.file);
+          };
+          reader.readAsDataURL(file);
+        //   this.props.setFieldValue(this.props.field.name, file);
+        }
+        console.log(this.state.file);
+        this.closeModal();
+
+      }
+
+    openModal() {
+        this.setState({modalIsOpen: true});
+    }
+    
+    afterOpenModal() {
+    // references are now sync'd and can be accessed.
+        this.subtitle.style.color = '#f00';
+    }
+    
+    closeModal() {
+        this.setState({modalIsOpen: false});
+    }
+
+    
 
     componentWillMount() {
 
@@ -49,6 +103,8 @@ class Profile extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+
+        // console.log("NEXTPROPS", nextProps);
         
         if(this.props.user.photos !== nextProps.user.photos) {
             if(nextProps.user.photos) {
@@ -60,11 +116,17 @@ class Profile extends Component {
                 });
             }
         }
+
+        if(nextProps.user) {
+            this.setState({user: nextProps.user.data })
+        }
+
     }
+
 
     render() {
 
-        console.log("PROPS: ", this.props);
+        console.log("USEEEERRR: ", this.state.user);
 
 
         return(
@@ -72,11 +134,12 @@ class Profile extends Component {
                 <Nav {...this.props} />
 
                 {console.log("USER: ", this.state.user)}
-
+                <div className="profile-picture-upload">
+                    <ProfilePictureModal modalIsOpen={this.state.modalIsOpen} openModal={this.openModal} closeModal={this.closeModal} handleImageChange={this.handleImageChange} />
+                </div>
                 <div className="container user-info">
-                    <div className="user-photo col-4">
-                    
-                        {this.state.user.profile_picture ? <img src={this.state.user.profile_picture}></img> : <FaUserAlt style={{width: "100px", height: "100px", borderRadius: "100%"}} />}
+                    <div className="user-photo col-4" title="Change image">
+                            {this.state.user.profile_picture ? <img src={this.state.user.profile_picture} onClick={this.openModal}></img> : <FaUserAlt style={{width: "100px", height: "100px", borderRadius: "100%"}} onClick={this.openModal} />}
                     </div>
                     <div className="user-data col-8">
                         <div className="user-info"><h4>{this.state.user.name}</h4> 
@@ -118,7 +181,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps (dispatch) {
-    return bindActionCreators({userPhotos}, dispatch)
+    return bindActionCreators({userPhotos, setProfilePicture}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);
