@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 import { Button, Navbar, Form, FormControl } from 'react-bootstrap';
 import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
+import "../styles/style.css";
+
 
 import { postImage } from '../actions/photos';
 

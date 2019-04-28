@@ -8,7 +8,11 @@ import ProfilePictureModal from './profilePictureModal';
 
 import { userPhotos, setProfilePicture } from '../actions/user';
 
-import { FaUserAlt } from 'react-icons/fa';
+import { FaUserAlt, FaComment } from 'react-icons/fa';
+import { FiHeart } from 'react-icons/fi';
+
+import "../styles/style.css";
+
 
 class Profile extends Component {
     constructor(props) {
@@ -160,7 +164,11 @@ class Profile extends Component {
                     this.state.user_photos.map(photo => {
                         return (
                                 <div key={photo.id}  className="image">
-                                    <img src={photo.path}></img>
+                                    <div className="user-images-profile-info">
+                                        <div className="user-images-likes" ><FiHeart size="2em" /> {photo.likes.length} </div>
+                                        <div className="user-images-likes" ><FaComment size="2em" /> {photo.comments.length} </div>
+                                    </div>
+                                    <img className="user-images-profile" src={photo.path}></img>
                                 </div>
                         )   
                     })
