@@ -18,6 +18,7 @@ class ProfilePictureModal extends Component {
             
                 <Modal className="profile-picture-upload-button" style={{
                 overlay: {
+                zIndex: '20',
                 backgroundColor: 'rgba(128, 128, 128, 0.75)'
                 }}}
                 isOpen={this.props.modalIsOpen}
