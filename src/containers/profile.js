@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 
 import Nav from '../components/Navbar';
 import ProfilePictureModal from './profilePictureModal';
+import ImageModal from './imageModal';
 
 import { userPhotos, setProfilePicture } from '../actions/user';
 
@@ -21,13 +22,17 @@ class Profile extends Component {
             user_photos: [],
             user: {},
             modalIsOpen: false,
+            ImageModalIsOpen: false,
+            currentOpenPhoto: {},
             file: undefined,
 
         }
 
         this.openModal = this.openModal.bind(this);
+        this.openImageModal = this.openImageModal.bind(this);
         this.afterOpenModal = this.afterOpenModal.bind(this);
         this.closeModal = this.closeModal.bind(this);   
+        this.closeImageModal = this.closeImageModal.bind(this);   
         this.handleImageChange = this.handleImageChange.bind(this);
 
     }
@@ -64,6 +69,10 @@ class Profile extends Component {
     openModal() {
         this.setState({modalIsOpen: true});
     }
+    openImageModal() {
+        this.setState({ImageModalIsOpen: true});
+        
+    }
     
     afterOpenModal() {
     // references are now sync'd and can be accessed.
@@ -72,6 +81,10 @@ class Profile extends Component {
     
     closeModal() {
         this.setState({modalIsOpen: false});
+    }
+
+    closeImageModal() {
+        this.setState({ImageModalIsOpen: false});
     }
 
     
@@ -154,21 +167,26 @@ class Profile extends Component {
                                 Edit profile
                             </Link>
                         </div>
-                        <div></div>
-                        <div></div>
                     </div>
                 </div>
+                <ImageModal ImageModalIsOpen={this.state.ImageModalIsOpen} openImageModal={this.openImageModal} closeImageModal={this.closeImageModal} image={this.state.currentOpenPhoto} />
+
 
                 <div className="container col-10 user_images">
+
                 {
                     this.state.user_photos.map(photo => {
                         return (
                                 <div key={photo.id}  className="image">
-                                    <div className="user-images-profile-info">
+                                    <div className="user-images-profile-info" onClick={() => {
+                                        this.openImageModal();
+                                        this.setState({currentOpenPhoto: photo})
+                                    }}>
                                         <div className="user-images-likes" ><FiHeart size="2em" /> {photo.likes.length} </div>
                                         <div className="user-images-likes" ><FaComment size="2em" /> {photo.comments.length} </div>
                                     </div>
                                     <img className="user-images-profile" src={photo.path}></img>
+
                                 </div>
                         )   
                     })

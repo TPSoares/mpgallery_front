@@ -285,7 +285,7 @@
 }
 
 .user-images-profile-info:hover {
-    z-index: 10;
+    /* z-index: 10; */
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -334,10 +334,10 @@ input[type="file"] {
 }
 
 .profile-picture-upload {
-    display: flex;
+    /* display: flex;
     justify-content: flex-end;
     align-items: center;
-    align-self: flex-end;
+    align-self: flex-end; */
 }
 
 .profile-picture-upload-button {
